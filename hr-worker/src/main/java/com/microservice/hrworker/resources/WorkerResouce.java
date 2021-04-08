@@ -5,6 +5,7 @@ import com.microservice.hrworker.repositories.WorkerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ public class WorkerResouce {
 
     private static Logger logger = LoggerFactory.getLogger(WorkerResouce.class);
 
+    @Value("${test.config}")
+    private String testConfig;
+
     @Autowired
     private Environment env;
 
@@ -25,6 +29,12 @@ public class WorkerResouce {
     @Autowired
     public WorkerResouce(WorkerRepository workerRepository) {
         this.workerRepository = workerRepository;
+    }
+
+    @GetMapping(value = "/configs")
+    public ResponseEntity<String> configs() {
+        logger.info("CONFIG: " + testConfig);
+        return ResponseEntity.ok(testConfig);
     }
 
     @GetMapping
